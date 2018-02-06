@@ -68,13 +68,26 @@ function searchByHeight(people) {
 }
 
 function searchByWeight(people) {
-  let userInputWeight = prompt("How much does the person weigh?");
+  let userInputWeight = prompt("How much does the person weigh?"); 
 
   let newArray = people.filter(function (el) {
     if(el.weight == userInputWeight) {
       return true;
     }
     // return true if el.height matches userInputHeight
+  });
+
+  return newArray;
+}
+
+function searchByEyeColor(people) {
+  let userInputEyeColor = prompt("What eye color does the person have?"); // added 2/6
+
+  let newArray = people.filter(function (el) {
+    if(el.eyeColor == userInputEyeColor) {
+      return true;
+    }
+    // return true if el.eyeColor matches userInputEyeColor
   });
 
   return newArray;
