@@ -241,6 +241,19 @@ function promptForNumbers(question){
   return response;
 }
 
+function getAge(people) {
+  // pull in Array
+let todayDate = Date();
+people = people.map(function(el){
+  el.age = el.dob;
+
+});
+  
+}
+  // take the dob and convert into an Age 
+
+  //return to searchByAge
+
 function getDescendants(person, people) {
   let descendants = getChildren(person, people);
   if(descendants.length > 0){
