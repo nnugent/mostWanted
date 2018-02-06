@@ -261,7 +261,7 @@ function getChildren(person, people) {
   return children;
 }
 
-function getParents(person, people) {
+function getParents(person) {
   let parents = people.filter(function(el){
     for(let i = 0; i < person.parents.length; i++){
       if(el.id === person.parents[i]){
@@ -270,4 +270,19 @@ function getParents(person, people) {
     }
   });
   return parents;
+}
+
+function getSiblings(person, people) {
+  let siblings = people.filter(function(el){
+    if(el.parents !== undefined && person.parents !== undefined){
+      for(let i = 0; i < el.parents; i++){
+        for(let j = 0; j < person.parents; j++){
+          if(el.parents[i] === person.parents[j]){
+            return true;
+          }
+        }
+      }
+    }
+  });
+  return siblings;
 }
