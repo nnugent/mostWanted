@@ -219,7 +219,6 @@ let todaysDate = new Date();
   let splitDobNumbers = splitDobText.map(Number);
   let age = currentYear - splitDobNumbers[2]; /// add checking 
   el.age = age;
-  console.log(people);
 });
 }
   // take the dob and convert into an Age 
