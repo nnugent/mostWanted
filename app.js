@@ -50,6 +50,77 @@ function searchByTraits(people) { ///
   mainMenu(foundPerson, people);
 }
 
+// Menu function to call once you find who you are looking for
+function mainMenu(person, people){
+
+  /* Here we pass in the entire person object that we found in our search, as well as
+  the entire original dataset of people. We need people in order to find descendants 
+  and other information that the user may want. */
+
+  if(!person){
+    alert("Could not find that individual.");
+    return app(people); // restart
+  }
+
+  var displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
+
+  switch(displayOption){
+    case "info":
+    displayPersonInfo(person);
+    break;
+    case "family":
+    displayPeople(getFamily(person, people));
+    break;
+    case "descendants":
+    displayPeople(getDescendants(person, people));
+    break;
+    case "restart":
+    app(people); // restart
+    break;
+    case "quit":
+    return; // stop execution
+    default:
+    return mainMenu(person, people); // ask again
+  }
+}
+
+// alerts a list of people
+function displayPeople(people){
+  alert(people.map(function(person){
+    return person.firstName + " " + person.lastName;
+  }).join("\n"));
+}
+
+function displayPersonInfo(person){
+  // print all of the information about a person:
+  // height, weight, age, name, occupation, eye color.
+  var personInfo = "First Name: " + person.firstName + "\n";
+  personInfo += "Last Name: " + person.lastName + "\n";
+  personInfo += "Gender: " + person.gender + "\n";
+  personInof += "Age: " + person.age + "\n";
+  personInfo += "Height: " + person.height + "\n";
+  personInfo += "Weight: " + person.weight + "\n";
+  personInfo += "Eye Color: " + person.eyeColor + "\n";
+  personInfo += "Occupation: " + person.occupation + "\n";
+  alert(personInfo);
+}
+
+function searchByName(people){
+  var firstName = promptFor("What is the person's first name?", chars);
+  var lastName = promptFor("What is the person's last name?", chars);
+  let filteredPeople = people.filter(function(el){
+    if(el.firstName.toLowerCase() === firstName && el.lastName.toLowerCase() === lastName){
+      return true;
+    }
+  });
+  if(filteredPeople.length > 0){
+    alert("There were multiple people with that name, try searching with a different trait.");
+    app(people);
+  }
+  let foundPerson = filteredPeople[0];
+  mainMenu(foundPerson, people);
+}
+
 function searchByHeight(people) {
   let userInputHeight = promptForNumbers("How tall is the person?"); /// added 2/6
 
@@ -136,119 +207,12 @@ if(filteredPeople.length > 0){
   return filteredPeople;
 }
 
-// Menu function to call once you find who you are looking for
-function mainMenu(person, people){
-
-  /* Here we pass in the entire person object that we found in our search, as well as
-  the entire original dataset of people. We need people in order to find descendants 
-  and other information that the user may want. */
-
-  if(!person){
-    alert("Could not find that individual.");
-    return app(people); // restart
-  }
-
-  var displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
-
-  switch(displayOption){
-    case "info":
-    displayPersonInfo(person);
-    break;
-    case "family":
-    displayPeople(getFamily(person, people));
-    break;
-    case "descendants":
-    displayPeople(getDescendants(person, people));
-    break;
-    case "restart":
-    app(people); // restart
-    break;
-    case "quit":
-    return; // stop execution
-    default:
-    return mainMenu(person, people); // ask again
-  }
-}
-
-function searchByName(people){
-  var firstName = promptFor("What is the person's first name?", chars);
-  var lastName = promptFor("What is the person's last name?", chars);
-  let filteredPeople = people.filter(function(el){
-    if(el.firstName.toLowerCase() === firstName && el.lastName.toLowerCase() === lastName){
-      return true;
-    }
-  });
-  if(filteredPeople.length > 0){
-    alert("There were multiple people with that name, try searching with a different trait.");
-    app(people);
-  }
-  let foundPerson = filteredPeople[0];
-  mainMenu(foundPerson, people);
-}
-
-// alerts a list of people
-function displayPeople(people){
-  alert(people.map(function(person){
-    return person.firstName + " " + person.lastName;
-  }).join("\n"));
-}
-
-function displayPersonInfo(person){
-  // print all of the information about a person:
-  // height, weight, age, name, occupation, eye color.
-  var personInfo = "First Name: " + person.firstName + "\n";
-  personInfo += "Last Name: " + person.lastName + "\n";
-  personInfo += "Gender: " + person.gender + "\n";
-  personInof += "Age: " + person.age + "\n";
-  personInfo += "Height: " + person.height + "\n";
-  personInfo += "Weight: " + person.weight + "\n";
-  personInfo += "Eye Color: " + person.eyeColor + "\n";
-  personInfo += "Occupation: " + person.occupation + "\n";
-  alert(personInfo);
-}
-
-function promptFor(question, valid){
-  do{
-    var incorrectInput = true; 
-    var response = prompt(question).trim().toLowerCase();
-    if(!valid(response)){
-      alert("Your input was invalid, check the prompt for valid inputs.");
-    }else incorrectInput = false;
-  } while(!response || incorrectInput);
-  return response;
-}
-
-function yesNo(input){
-  return (input === 'yes' || input === 'no');
-}
-
-function chars(input){
-  return true;
-}
-
-function mainInput(input) {
-  return (input === "info" || input === "descendants" || input === "restart" || input === "quit" || input === "family") 
-}
-
-function promptForNumbers(question){
-  do{
-    var incorrectInput = true;
-    var response = prompt(question).trim().parseInt();
-    if(response === NaN){
-      alert("Your input must be a number. Please try again.");
-    }else incorrectInput = false;
-  }while(!response || incorrectInput);
-  return response;
-}
-
 function getAge(people) {
   // pull in Array
 let todayDate = Date();
-people = people.map(function(el){
-  el.age = el.dob;
-
-});
-  
+  people = people.map(function(el){
+    el.age = el.dob;
+  }); 
 }
   // take the dob and convert into an Age 
 
@@ -330,4 +294,38 @@ function getCurrentSpouse(person,people){
     }
   });
   return currentSpouse;
+}
+
+function yesNo(input){
+  return (input === 'yes' || input === 'no');
+}
+
+function chars(input){
+  return true;
+}
+
+function mainInput(input) {
+  return (input === "info" || input === "descendants" || input === "restart" || input === "quit" || input === "family") 
+}
+
+function promptForText(question, valid){
+  do{
+    var incorrectInput = true; 
+    var response = prompt(question).trim().toLowerCase();
+    if(!valid(response)){
+      alert("Your input was invalid, check the prompt for valid inputs.");
+    }else incorrectInput = false;
+  } while(!response || incorrectInput);
+  return response;
+}
+
+function promptForNumbers(question){
+  do{
+    var incorrectInput = true;
+    var response = prompt(question).trim().parseInt();
+    if(response === NaN){
+      alert("Your input must be a number. Please try again.");
+    }else incorrectInput = false;
+  }while(!response || incorrectInput);
+  return response;
 }
