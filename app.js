@@ -7,7 +7,7 @@ function app(people){ // loads the array
   var searchType = prompt("Do you know the name of the person you are looking for? Enter 'yes' or 'no'").toLowerCase();
   switch(searchType){
     case 'yes':
-    // TODO: search by name
+    searchByName(people);
     break;
     case 'no':
     searchByTraits(people);
@@ -105,6 +105,15 @@ function searchByName(people){
   var firstName = promptFor("What is the person's first name?", chars);
   var lastName = promptFor("What is the person's last name?", chars);
 
+  let filteredPeople = people.filter(function(el){
+    if(el.firstName === firstName && el.lastName === lastName){
+      return true;
+    }
+  });
+
+  let foundPerson = filteredPeople[0];
+
+  mainMenu(foundPerson, people);
 }
 
 // alerts a list of people
