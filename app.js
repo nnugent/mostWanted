@@ -25,23 +25,22 @@ function searchByTraits(people) { ///
 
   switch(userSearchChoice) {
     case "height":
-      filteredPeople = searchByHeight(people); // need to create a function for searchByHeight;
+      filteredPeople = searchByHeight(people); 
       break;
     case "weight":
       filteredPeople = searchByWeight(people);
       break;
     case "eye color":
-      filteredPeople = searchByEyeColor(people); /// need to add a function for searchByEyeColor
+      filteredPeople = searchByEyeColor(people); 
       break;
     case "gender":
-      filteredPeople = searchByGender(people); //// need to create a function for searchByGender
+      filteredPeople = searchByGender(people); 
       break;
     case "age":
-      filteredPeople = searchByAge(people); /// need to create a function for searchByAge
+      filteredPeople = searchByAge(people); 
     case "occupation":
-      filteredPeople = searchByOccupation(people); /// need to create a function for searchByOccupation
-
-    // so on and so forth
+      filteredPeople = searchByOccupation(people); 
+      break;
     default:
       alert("You entered an invalid search type! Please try again.");
       searchByTraits(people);
@@ -92,6 +91,47 @@ function searchByEyeColor(people) {
 
   return newArray;
 }
+
+function searchByGender(people) {
+  let userInputGender = prompt("What Gender is the person you are looking for?"); // added 2/6
+
+  let newArray = people.filter(function (el) {
+    if(el.gender == userInputGender) {
+      return true;
+    }
+    // return true if el.gender matches userInputGender
+  });
+
+  return newArray;
+}
+
+function searchByAge(people) {
+  let userInputAge = prompt("How old is the person you are looking for?"); // added framework not logic to find the age
+
+  let newArray = people.filter(function (el) {
+    if(el.dob == userInputAge) {
+      return true;
+    }
+    // return true if el.dob matches userInputdob
+  });
+
+  return newArray;
+}
+
+function searchByOccupation(people) {
+  let userInputOccupation = prompt("What is the person's Occupation?"); // added 2/6
+
+  let newArray = people.filter(function (el) {
+    if(el.occupation == userInputOccupation) {
+      return true;
+    }
+    // return true if el.occupation matches userInputOccupation
+  });
+
+  return newArray;
+}
+
+
 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
