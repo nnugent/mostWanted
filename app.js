@@ -105,9 +105,9 @@ function searchByGender(people) {
   return newArray;
 }
 
-function searchByAge(ageArray) {
+function searchByAge(people) {
   let userInputAge = prompt("How old is the person you are looking for?"); // added framework not logic to find the age
-  getAge();
+  getAge(people);
   let newArray = ageArray.filter(function (el) {
     if(el.age == userInputAge) {
       return true;
@@ -223,12 +223,17 @@ function chars(input){
 
 function getAge(people) {
   // pull in Array
-let todayDate = Date();
-people = people.map(function(el){
-  el.age = el.dob;
-
+let todaysDate = new Date();
+  let currentDate = todaysDate.getDate();
+  let currentMonth = todaysDate.getMonth() + 1; //Months are zero based
+  let currentYear = todaysDate.getFullYear();
+  people = people.map(function(el){
+  let splitDobText = el.dob.split("/");
+  let splitDobNumbers = splitDobText.map(Number);
+  let age = currentYear - splitDobNumbers[2]; /// add checking 
+  el.age = age;
+  console.log(people);
 });
-  
 }
 
   // take the dob and convert into an Age 
