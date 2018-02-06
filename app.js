@@ -3,7 +3,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 */
 
 // app is the function called to start the entire application
-function app(people){
+function app(people){ // loads the array
   var searchType = prompt("Do you know the name of the person you are looking for? Enter 'yes' or 'no'").toLowerCase();
   switch(searchType){
     case 'yes':
@@ -19,17 +19,28 @@ function app(people){
   }
 }
 
-function searchByTraits(people) {
+function searchByTraits(people) { /// 
   let userSearchChoice = prompt("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.");
   let filteredPeople;
 
   switch(userSearchChoice) {
     case "height":
-      filteredPeople = searchByHeight(people);
+      filteredPeople = searchByHeight(people); // need to create a function for searchByHeight;
       break;
     case "weight":
       filteredPeople = searchByWeight(people);
       break;
+    case "eye color":
+      filteredPeople = searchByEyeColor(people); /// need to add a function for searchByEyeColor
+      break;
+    case "gender":
+      filteredPeople = searchByGender(people); //// need to create a function for searchByGender
+      break;
+    case "age":
+      filteredPeople = searchByAge(people); /// need to create a function for searchByAge
+    case "occupation":
+      filteredPeople = searchByOccupation(people); /// need to create a function for searchByOccupation
+
     // so on and so forth
     default:
       alert("You entered an invalid search type! Please try again.");
@@ -134,3 +145,6 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
+
+
+// use map array to determine age....... 
