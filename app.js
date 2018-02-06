@@ -96,7 +96,7 @@ function searchByGender(people) {
   let userInputGender = prompt("What Gender is the person you are looking for?"); // added 2/6
 
   let newArray = people.filter(function (el) {
-    if(el.gender == userInputGender) {
+    if(el.gender === userInputGender) {
       return true;
     }
     // return true if el.gender matches userInputGender
@@ -243,4 +243,31 @@ function getDescendants(person, people) {
     return;
   }
   return descendants;
+}
+
+
+function getFamily(person, people) {
+  //must find parents, siblings, current spouse & children
+}
+
+function getChildren(person, people) {
+  let children = people.filter(function(el){
+    for(let i = 0; i < el.parents.length; i++){
+      if (el.parents[i] === person.id){
+        return true;
+      }
+    }
+  });
+  return children;
+}
+
+function getParents(person, people) {
+  let parents = people.filter(function(el){
+    for(let i = 0; i < person.parents.length; i++){
+      if(el.id === person.parents[i]){
+        return true;
+      }
+    }
+  });
+  return parents;
 }
