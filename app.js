@@ -96,7 +96,7 @@ function searchByGender(people) {
   let userInputGender = prompt("What Gender is the person you are looking for?"); // added 2/6
 
   let newArray = people.filter(function (el) {
-    if(el.gender == userInputGender) {
+    if(el.gender === userInputGender) {
       return true;
     }
     // return true if el.gender matches userInputGender
@@ -152,10 +152,10 @@ function mainMenu(person, people){
     // TODO: get person's info
     break;
     case "family":
-    // TODO: get person's family
+    displayPeople(getFamily(person, people));
     break;
     case "descendants":
-    console.log(getDescendants(person, people));
+    displayPeople(getDescendants(person, people));
     break;
     case "restart":
     app(people); // restart
@@ -189,7 +189,7 @@ function displayPeople(people){
   }).join("\n"));
 }
 
-function displayPerson(person){
+function displayPersonInfo(person){
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
   var personInfo = "First Name: " + person.firstName + "\n";
@@ -237,13 +237,7 @@ people = people.map(function(el){
 
 
 function getDescendants(person, people) {
-  let descendants = people.filter(function(el){
-    for(let i = 0; i < el.parents.length; i++){
-      if(el.parents[i] === person.id){
-        return true;
-      }
-    }
-  });
+  let descendants = getChildren(person, people);
   if(descendants.length > 0){
     for(let i = 0; i < descendants.length; i++){
       let grandkids = getDescendants(descendants[i], people)
@@ -257,4 +251,65 @@ function getDescendants(person, people) {
     return;
   }
   return descendants;
+}
+
+
+function getFamily(person, people) {
+  let parents = getParents(person, people);
+  let siblings = getSiblings(person, people);
+  let children = getChildren(person, people);
+  let currentSpouse = getCurrentSpouse(person, people);
+  let family = [person];
+  if(parents !== undefined) family = family.concat(parents);
+  if(siblings !== undefined) family = family.concat(siblings);
+  if(children !== undefined) family = family.concat(children);
+  if(currentSpouse !== undefined) family = family.concat(currentSpouse);
+  family.shift(); 
+  return family;
+}
+
+function getChildren(person, people) {
+  let children = people.filter(function(el){
+    for(let i = 0; i < el.parents.length; i++){
+      if (el.parents[i] === person.id){
+        return true;
+      }
+    }
+  });
+  return children;
+}
+
+function getParents(person, people) {
+  let parents = people.filter(function(el){
+    for(let i = 0; i < person.parents.length; i++){
+      if(el.id === person.parents[i]){
+        return true;
+      }
+    }
+  });
+  return parents;
+}
+
+function getSiblings(person, people) {
+  let siblings = people.filter(function(el){
+    if(el.parents !== undefined && person.parents !== undefined){
+      for(let i = 0; i < el.parents.length; i++){
+        for(let j = 0; j < person.parents.length; j++){
+          if(el.parents[i] === person.parents[j] && el.id !== person.id){
+            return true;
+          }
+        }
+      }
+    }
+  });
+  return siblings;
+}
+
+function getCurrentSpouse(person,people){
+  let currentSpouse = people.filter(function(el){
+    if(el.id === person.currentSpouse){
+      return true;
+    }
+  });
+  return currentSpouse;
 }
