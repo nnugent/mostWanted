@@ -105,11 +105,11 @@ function searchByGender(people) {
   return newArray;
 }
 
-function searchByAge(people) {
+function searchByAge(ageArray) {
   let userInputAge = prompt("How old is the person you are looking for?"); // added framework not logic to find the age
-
-  let newArray = people.filter(function (el) {
-    if(el.dob == userInputAge) {
+  getAge();
+  let newArray = ageArray.filter(function (el) {
+    if(el.age == userInputAge) {
       return true;
     }
     // return true if el.dob matches userInputdob
@@ -220,6 +220,20 @@ function yesNo(input){
 function chars(input){
   return true; // default validation only
 }
+
+function getAge(people) {
+  // pull in Array
+let todayDate = Date();
+people = people.map(function(el){
+  el.age = el.dob;
+
+});
+  
+}
+
+  // take the dob and convert into an Age 
+
+  //return to searchByAge
 
 
 function getDescendants(person, people) {
