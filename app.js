@@ -20,7 +20,7 @@ function app(people){ // loads the array
 }
 
 function searchByTraits(people) { /// 
-  let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.");
+  let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.", searchByInputCheck);
   let filteredPeople;
 
   switch(userSearchChoice) {
@@ -97,7 +97,7 @@ function displayPersonInfo(person){
   var personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
   personInfo += "Gender: " + person.gender + "\n";
-  personInof += "Age: " + person.age + "\n";
+  personInfo += "Age: " + person.age + "\n";
   personInfo += "Height: " + person.height + "\n";
   personInfo += "Weight: " + person.weight + "\n";
   personInfo += "Eye Color: " + person.eyeColor + "\n";
@@ -189,6 +189,7 @@ function searchByAge(people) {
   if(filteredPeople.length > 1){
     alert("The following people were found with the age you entered.");
     displayPeople(filteredPeople);
+    promptForText("Which person would you like to look for?")
   }
   return filteredPeople;
 }
@@ -312,9 +313,13 @@ function chars(input){
 }
 
 function mainInput(input) {
-  return (input === "info" || input === "descendants" || input === "restart" || input === "quit" || input === "family") 
+  return (input === "info" || input === "descendants" || input === "restart" || input === "quit" || input === "family"); 
 }
 
+function searchByInputCheck(input) {
+  return (input === "height" || input ==="weight" || input === "eye color" || input === "gender" || input === "age" || input === "occupation");
+}
+ 
 function promptForText(question, valid){
   do{
     var incorrectInput = true; 
@@ -329,10 +334,14 @@ function promptForText(question, valid){
 function promptForNumbers(question){
   do{
     var incorrectInput = true;
-    var response = prompt(question).trim().parseInt();
+    var response = parseInt(prompt(question).trim());
     if(response === NaN){
       alert("Your input must be a number. Please try again.");
     }else incorrectInput = false;
   }while(!response || incorrectInput);
   return response;
 }
+
+/*******Set up the searchByFunctions to ask for which person they would want to inspect if there are multiple matches 
+could most likly make something like another name prompt function that get's passed the new array of people that matched, and then ask 
+the user which person they would like to use, and then set that equal to found person*******/
