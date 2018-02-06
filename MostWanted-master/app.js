@@ -50,11 +50,23 @@ function searchByWeight(people) {
     if(el.weight == userInputWeight) {
       return true;
     }
-    // return true if el.height matches userInputHeight
+    // return true if el.weight matches userInputWeight
   });
 
   return newArray;
 }
+
+function searchByHeight(people) {
+  let userInputHeight = prompt("How tall is the person?"); /// added 2/6
+
+  let newArray = people.filter(function (el) {
+    if(el.height == userInputHeight) {
+      return true;
+    }
+    // return true if el.height matches userInputHeight
+  });
+
+  return newArray;
 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
