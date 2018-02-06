@@ -155,7 +155,7 @@ function mainMenu(person, people){
     // TODO: get person's family
     break;
     case "descendants":
-    // TODO: get person's descendants
+    console.log(getDescendants(person, people));
     break;
     case "restart":
     app(people); // restart
@@ -222,4 +222,25 @@ function chars(input){
 }
 
 
-// use map array to determine age....... 
+function getDescendants(person, people) {
+  let descendants = people.filter(function(el){
+    for(let i = 0; i < el.parents.length; i++){
+      if(el.parents[i] === person.id){
+        return true;
+      }
+    }
+  });
+  if(descendants.length > 0){
+    for(let i = 0; i < descendants.length; i++){
+      let grandkids = getDescendants(descendants[i], people)
+      if(grandkids !== undefined){
+        for(let j = 0; j < grandkids.length; j++){
+          descendants.push(grandkids[j]);
+        }
+      }
+    }
+  }else{
+    return;
+  }
+  return descendants;
+}
