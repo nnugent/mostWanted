@@ -2,15 +2,15 @@ function app(people){
   var searchType = promptForText("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
-    searchByName(people);
-    break;
+      searchByName(people);
+      break;
     case 'no':
-    searchByTraits(people);
-    break;
+      searchByTraits(people);
+      break;
     default:
-    alert("Wrong! Please try again, following the instructions dummy. :)");
-    app(people);
-    break;
+      alert("Wrong! Please try again, following the instructions dummy. :)");
+      app(people);
+      break;
   }
 }
 
@@ -33,7 +33,6 @@ function searchByTraits(people) {
       break;
     case "age":
       filteredPeople = searchByAge(people); 
-      break;
     case "occupation":
       filteredPeople = searchByOccupation(people); 
       break;
@@ -54,23 +53,23 @@ function mainMenu(person, people){
   var displayOption = promptForText("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
   switch(displayOption){
     case "info":
-    displayPersonInfo(person);
-    break;
+      displayPersonInfo(person);
+      break;
     case "family":
-    displayPeople(getFamily(person, people));
-    break;
+      displayPeople(getFamily(person, people));
+      break;
     case "descendants":
-    let descendants = getDescendants(person,people);
-    if(descendants.length > 0) displayPeople(descendants);
-    else alert("According to our database, " + person.firstName + " " + person.lastName + " has no descendants.");
-    break;
+      let descendants = getDescendants(person,people);
+      if(descendants.length > 0) displayPeople(descendants);
+      else alert("According to our database, " + person.firstName + " " + person.lastName + " has no descendants.");
+      break;
     case "restart":
-    app(people);
-    break;
+      app(people);
+      break;
     case "quit":
-    return;
+      return;
     default:
-    return mainMenu(person, people);
+      return mainMenu(person, people);
   }
 }
 
@@ -169,8 +168,7 @@ function searchByGender(people) {
 }
 
 function searchByAge(people) {
-  let userInputAge = promptForNumbers("How old is the person you are looking for?"); 
-  getAge(people);
+  let userInputAge = promptForNumbers("How old is the person you are looking for?"); // added framework not logic to find the age
   let filteredPeople = people.filter(function (el) {
     if(el.age === userInputAge) {
       return true;
@@ -326,7 +324,9 @@ function promptForNumbers(question){
   return response;
 }
 function foundPeopleChoice(people) {
-  for(let i = 0; i < people.length; i++){
+  if(people.length === 1){
+    return people[0];
+  } else {
 
   }
 }
