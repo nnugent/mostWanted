@@ -1,25 +1,20 @@
-/*
-Build all of your functions for displaying and gathering information below (GUI).
-*/
-
-// app is the function called to start the entire application
-function app(people){ // loads the array
+function app(people){
   var searchType = promptForText("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
-    searchByName(people);
-    break;
+      searchByName(people);
+      break;
     case 'no':
-    searchByTraits(people);
-    break;
+      searchByTraits(people);
+      break;
     default:
-    alert("Wrong! Please try again, following the instructions dummy. :)");
-    app(people); // restart app
-    break;
+      alert("Wrong! Please try again, following the instructions dummy. :)");
+      app(people);
+      break;
   }
 }
 
-function searchByTraits(people) { /// 
+function searchByTraits(people) {
   let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.", searchByInputCheck);
   let filteredPeople;
 
@@ -38,7 +33,6 @@ function searchByTraits(people) { ///
       break;
     case "age":
       filteredPeople = searchByAge(people); 
-      break;
     case "occupation":
       filteredPeople = searchByOccupation(people); 
       break;
@@ -51,43 +45,36 @@ function searchByTraits(people) { ///
   mainMenu(foundPerson, people);
 }
 
-// Menu function to call once you find who you are looking for
 function mainMenu(person, people){
-
-  /* Here we pass in the entire person object that we found in our search, as well as
-  the entire original dataset of people. We need people in order to find descendants 
-  and other information that the user may want. */
-
   if(!person){
     alert("Could not find that individual.");
-    return app(people); // restart
+    return app(people);
   }
-
   var displayOption = promptForText("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
-
   switch(displayOption){
     case "info":
-    displayPersonInfo(person);
-    break;
+      alert(displayPersonInfo(person));
+      break;
     case "family":
-    displayPeople(getFamily(person, people));
-    break;
+      alert(displayPeople(getFamily(person, people)));
+      break;
     case "descendants":
-    displayPeople(getDescendants(person, people));
-    break;
+      let descendants = getDescendants(person,people);
+      if(descendants.length > 0) alert(displayPeople(descendants));
+      else alert("According to our database, " + person.firstName + " " + person.lastName + " has no descendants.");
+      break;
     case "restart":
-    app(people); // restart
-    break;
+      app(people);
+      break;
     case "quit":
-    return; // stop execution
+      return;
     default:
-    return mainMenu(person, people); // ask again
+      return mainMenu(person, people);
   }
 }
 
-// alerts a list of people
 function displayPeople(people){
-  alert(people.map(function(person){
+  return (people.map(function(person){
     return person.firstName + " " + person.lastName;
   }).join("\n"));
 }
@@ -104,7 +91,7 @@ function displayPersonInfo(person){
   personInfo += "Weight: " + person.weight + "\n";
   personInfo += "Eye Color: " + person.eyeColor + "\n";
   personInfo += "Occupation: " + person.occupation + "\n";
-  alert(personInfo);
+  return personInfo;
 }
 
 function searchByName(people){
@@ -124,18 +111,15 @@ function searchByName(people){
 }
 
 function searchByHeight(people) {
-  let userInputHeight = promptForNumbers("How tall is the person?"); /// added 2/6
+  let userInputHeight = promptForNumbers("How tall is the person?");
 
   let filteredPeople = people.filter(function (el) {
     if(el.height === userInputHeight) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the height you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByWeight(people) {
@@ -146,11 +130,8 @@ function searchByWeight(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the weight you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByEyeColor(people) {
@@ -160,11 +141,8 @@ function searchByEyeColor(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the eye color you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByGender(people) {
@@ -174,27 +152,19 @@ function searchByGender(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the gender you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByAge(people) {
-  let userInputAge = promptForNumbers("How old is the person you are looking for?"); 
-  getAge(people);
+  let userInputAge = promptForNumbers("How old is the person you are looking for?"); // added framework not logic to find the age
   let filteredPeople = people.filter(function (el) {
     if(el.age === userInputAge) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the age you entered.");
-    displayPeople(filteredPeople);
-    promptForText("Which person would you like to look for?")
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByOccupation(people) {
@@ -204,11 +174,8 @@ function searchByOccupation(people) {
       return true;
     }
   });
-if(filteredPeople.length > 1){
-    alert("The following people were found with the occupation you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function getAge(people) {
@@ -233,6 +200,7 @@ function getAge(people) {
   }
   el.age = age;
 });
+
 }
   // take the dob and convert into an Age 
 
@@ -240,21 +208,16 @@ function getAge(people) {
 
 function getDescendants(person, people) {
   let descendants = getChildren(person, people);
-  if(descendants.length > 0){
-    for(let i = 0; i < descendants.length; i++){
-      let grandkids = getDescendants(descendants[i], people)
-      if(grandkids !== undefined){
-        for(let j = 0; j < grandkids.length; j++){
-          descendants.push(grandkids[j]);
-        }
+  for(let i = 0; i < descendants.length; i++){
+    let grandkids = getDescendants(descendants[i], people)
+    if(grandkids !== undefined){
+      for(let j = 0; j < grandkids.length; j++){
+        descendants.push(grandkids[j]);
       }
     }
-  }else{
-    return;
   }
   return descendants;
 }
-
 
 function getFamily(person, people) {
   let parents = getParents(person, people);
@@ -354,6 +317,24 @@ function promptForNumbers(question){
   return response;
 }
 
+function resultChoice(people) {
+  if(people.length === 1){
+    return people[0];
+  } else {
+    let person = prompt("There were multiple people found with that information. Which of them would you like to look into?\n\n" + displayPeople(people)).toLowerCase();
+    let personNames = person.split(" ");
+    let choice = people.filter(function(el){
+    if(el.firstName.toLowerCase() === personNames[0] && el.lastName.toLowerCase() === personNames[1]){
+      return true;
+    }
+  });
+    if(choice.length === 0){
+      alert("Your input was invalid, please try again.");
+      return resultChoice(people);
+    }
+    return choice;
+  }
+}
 /*******Set up the searchByFunctions to ask for which person they would want to inspect if there are multiple matches 
 could most likly make something like another name prompt function that get's passed the new array of people that matched, and then ask 
 the user which person they would like to use, and then set that equal to found person*******/
