@@ -98,6 +98,7 @@ function displayPersonInfo(person){
   var personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
   personInfo += "Gender: " + person.gender + "\n";
+  personInfo += "Data of Birth: " + person.dob + "\n";
   personInfo += "Age: " + person.age + "\n";
   personInfo += "Height: " + person.height + "\n";
   personInfo += "Weight: " + person.weight + "\n";
@@ -212,14 +213,24 @@ if(filteredPeople.length > 1){
 
 function getAge(people) {
   // pull in Array
+  let age;
   let todaysDate = new Date();
   let currentDate = todaysDate.getDate();
   let currentMonth = todaysDate.getMonth() + 1; //Months are zero based
   let currentYear = todaysDate.getFullYear();
   people = people.map(function(el){
-  let splitDobText = el.dob.split("/");
-  let splitDobNumbers = splitDobText.map(Number);
-  let age = currentYear - splitDobNumbers[2]; /// add checking 
+  let splitDobString = el.dob.split("/");
+  let convertDobToNumbers = splitDobString.map(Number);
+  let PersonBirthMonth = convertDobToNumbers[0];
+  let PersonBirthYear = convertDobToNumbers[2];
+  // if mymonth > current month -1 from age
+  if (PersonBirthMonth > currentMonth) {
+  
+    age = (currentYear - 1 ) - PersonBirthYear;
+  }
+  else {
+    age = currentYear - PersonBirthYear;
+  }
   el.age = age;
 });
 }
