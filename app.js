@@ -4,7 +4,7 @@ Build all of your functions for displaying and gathering information below (GUI)
 
 // app is the function called to start the entire application
 function app(people){ // loads the array
-  var searchType = promptForText("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
+  var searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
     searchByName(people);
@@ -20,11 +20,12 @@ function app(people){ // loads the array
 }
 
 function searchByTraits(people) { /// 
-  let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.");
+  let userSearchChoice = prompt("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.");
   let filteredPeople;
 
   switch(userSearchChoice) {
     case "height":
+
       filteredPeople = searchByHeight(people); 
       break;
     case "weight":
@@ -62,7 +63,7 @@ function mainMenu(person, people){
     return app(people); // restart
   }
 
-  var displayOption = promptForText("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
+  var displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
 
   switch(displayOption){
     case "info":
@@ -106,14 +107,14 @@ function displayPersonInfo(person){
 }
 
 function searchByName(people){
-  var firstName = promptForText("What is the person's first name?", chars);
-  var lastName = promptForText("What is the person's last name?", chars);
+  var firstName = promptFor("What is the person's first name?", chars);
+  var lastName = promptFor("What is the person's last name?", chars);
   let filteredPeople = people.filter(function(el){
     if(el.firstName.toLowerCase() === firstName && el.lastName.toLowerCase() === lastName){
       return true;
     }
   });
-  if(filteredPeople.length > 1){
+  if(filteredPeople.length > 0){
     alert("There were multiple people with that name, try searching with a different trait.");
     app(people);
   }
@@ -129,7 +130,7 @@ function searchByHeight(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
+  if(filteredPeople.length > 0){
     alert("The following people were found with the height you entered.");
     displayPeople(filteredPeople);
   }
@@ -144,7 +145,7 @@ function searchByWeight(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
+  if(filteredPeople.length > 0){
     alert("The following people were found with the weight you entered.");
     displayPeople(filteredPeople);
   }
@@ -158,7 +159,7 @@ function searchByEyeColor(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
+  if(filteredPeople.length > 0){
     alert("The following people were found with the eye color you entered.");
     displayPeople(filteredPeople);
   }
@@ -172,7 +173,7 @@ function searchByGender(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
+  if(filteredPeople.length > 0){
     alert("The following people were found with the gender you entered.");
     displayPeople(filteredPeople);
   }
@@ -186,7 +187,7 @@ function searchByAge(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
+  if(filteredPeople.length > 0){
     alert("The following people were found with the age you entered.");
     displayPeople(filteredPeople);
   }
@@ -200,7 +201,7 @@ function searchByOccupation(people) {
       return true;
     }
   });
-if(filteredPeople.length > 1){
+if(filteredPeople.length > 0){
     alert("The following people were found with the occupation you entered.");
     displayPeople(filteredPeople);
   }
@@ -208,14 +209,13 @@ if(filteredPeople.length > 1){
 }
 
 function getAge(people) {
-  // pull in Array
 let todaysDate = new Date();
   let currentDate = todaysDate.getDate();
   let currentMonth = todaysDate.getMonth() + 1; //Months are zero based
   let currentYear = todaysDate.getFullYear();
   people = people.map(function(el){
-  let splitDobText = el.dob.split("/");
-  let splitDobNumbers = splitDobText.map(Number);
+  let splitDobString = el.dob.split("/");
+  let splitDobNumbers = splitDobString.map(Number);
   let age = currentYear - splitDobNumbers[2]; /// add checking 
   el.age = age;
 });

@@ -37,11 +37,13 @@ function searchByTraits(people) {
       break;
   }  
 
+}
+
   let foundPerson = filteredPeople[0];
 
   mainMenu(foundPerson, people);
 
-}
+
 
 function searchByWeight(people) {
   let userInputWeight = prompt("How much does the person weigh?");
