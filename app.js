@@ -154,7 +154,9 @@ function searchByGender(people) {
 
 function searchByAge(people) {
   let userInputAge = promptForNumbers("How old is the person you are looking for?"); // added framework not logic to find the age
+  getAge(people);
   let filteredPeople = people.filter(function (el) {
+
     if(el.age === userInputAge) {
       return true;
     }
@@ -174,23 +176,16 @@ function searchByOccupation(people) {
   return foundPerson;
 }
 
+
 function getAge(people) {
-  let age;
   let todaysDate = new Date();
-  let currentDate = todaysDate.getDate();
-  let currentMonth = todaysDate.getMonth() + 1;
-  let currentYear = todaysDate.getFullYear();
+  let oneYearInMilliseconds = 31556926000;
   people = people.map(function(el){
-  let splitDobString = el.dob.split("/");
-  let convertDobToNumbers = splitDobString.map(Number);
-  let PersonBirthMonth = convertDobToNumbers[0];
-  let PersonBirthYear = convertDobToNumbers[2];
-  if (PersonBirthMonth > currentMonth) {
-    age = (currentYear - 1 ) - PersonBirthYear;
-  }
-  else {
-    age = currentYear - PersonBirthYear;
-  }
+
+  let personsBirthDate = new Date(el.dob);
+  let ageInMilliseconds = todaysDate - personsBirthDate;
+  let age = Math.floor(ageInMilliseconds / oneYearInMilliseconds);
+ 
   el.age = age;
 });
 }
