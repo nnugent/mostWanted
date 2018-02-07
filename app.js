@@ -1,9 +1,4 @@
-/*
-Build all of your functions for displaying and gathering information below (GUI).
-*/
-
-// app is the function called to start the entire application
-function app(people){ // loads the array
+function app(people){
   var searchType = promptForText("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
@@ -14,12 +9,12 @@ function app(people){ // loads the array
     break;
     default:
     alert("Wrong! Please try again, following the instructions dummy. :)");
-    app(people); // restart app
+    app(people);
     break;
   }
 }
 
-function searchByTraits(people) { /// 
+function searchByTraits(people) {
   let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.", searchByInputCheck);
   let filteredPeople;
 
@@ -50,20 +45,12 @@ function searchByTraits(people) { ///
   mainMenu(foundPerson, people);
 }
 
-// Menu function to call once you find who you are looking for
 function mainMenu(person, people){
-
-  /* Here we pass in the entire person object that we found in our search, as well as
-  the entire original dataset of people. We need people in order to find descendants 
-  and other information that the user may want. */
-
   if(!person){
     alert("Could not find that individual.");
-    return app(people); // restart
+    return app(people);
   }
-
   var displayOption = promptForText("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
-
   switch(displayOption){
     case "info":
     displayPersonInfo(person);
@@ -75,16 +62,15 @@ function mainMenu(person, people){
     displayPeople(getDescendants(person, people));
     break;
     case "restart":
-    app(people); // restart
+    app(people);
     break;
     case "quit":
-    return; // stop execution
+    return;
     default:
-    return mainMenu(person, people); // ask again
+    return mainMenu(person, people);
   }
 }
 
-// alerts a list of people
 function displayPeople(people){
   alert(people.map(function(person){
     return person.firstName + " " + person.lastName;
@@ -122,7 +108,7 @@ function searchByName(people){
 }
 
 function searchByHeight(people) {
-  let userInputHeight = promptForNumbers("How tall is the person?"); /// added 2/6
+  let userInputHeight = promptForNumbers("How tall is the person?");
 
   let filteredPeople = people.filter(function (el) {
     if(el.height === userInputHeight) {
@@ -210,16 +196,16 @@ if(filteredPeople.length > 1){
 
 function getAge(people) {
   // pull in Array
-let todaysDate = new Date();
+  let todaysDate = new Date();
   let currentDate = todaysDate.getDate();
   let currentMonth = todaysDate.getMonth() + 1; //Months are zero based
   let currentYear = todaysDate.getFullYear();
   people = people.map(function(el){
-  let splitDobText = el.dob.split("/");
-  let splitDobNumbers = splitDobText.map(Number);
-  let age = currentYear - splitDobNumbers[2]; /// add checking 
-  el.age = age;
-});
+    let splitDobText = el.dob.split("/");
+    let splitDobNumbers = splitDobText.map(Number);
+    let age = currentYear - splitDobNumbers[2]; /// add checking 
+    el.age = age;
+  });
 }
   // take the dob and convert into an Age 
 
@@ -227,21 +213,20 @@ let todaysDate = new Date();
 
 function getDescendants(person, people) {
   let descendants = getChildren(person, people);
-  if(descendants.length > 0){
-    for(let i = 0; i < descendants.length; i++){
-      let grandkids = getDescendants(descendants[i], people)
-      if(grandkids !== undefined){
-        for(let j = 0; j < grandkids.length; j++){
-          descendants.push(grandkids[j]);
-        }
+  for(let i = 0; i < descendants.length; i++){
+    let grandkids = getDescendants(descendants[i], people)
+    if(grandkids !== undefined){
+      for(let j = 0; j < grandkids.length; j++){
+        descendants.push(grandkids[j]);
       }
     }
-  }else{
+  }
+  if(descendants.length === 0){
+    alert("According to our database " + person.firstName + " " + person.lastName + " has no descendants.");
     return;
   }
   return descendants;
 }
-
 
 function getFamily(person, people) {
   let parents = getParents(person, people);
@@ -340,7 +325,11 @@ function promptForNumbers(question){
   }while(!response || incorrectInput);
   return response;
 }
+function foundPeopleChoice(people) {
+  for(let i = 0; i < people.length; i++){
 
+  }
+}
 /*******Set up the searchByFunctions to ask for which person they would want to inspect if there are multiple matches 
 could most likly make something like another name prompt function that get's passed the new array of people that matched, and then ask 
 the user which person they would like to use, and then set that equal to found person*******/
