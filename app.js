@@ -176,7 +176,6 @@ function searchByOccupation(people) {
   return foundPerson;
 }
 
-
 function getAge(people) {
   let todaysDate = new Date();
   let oneYearInMilliseconds = 31556926000;
@@ -188,6 +187,7 @@ function getAge(people) {
  
   el.age = age;
 });
+  return people;
 }
 
 function getDescendants(person, people) {
