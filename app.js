@@ -59,11 +59,9 @@ function mainMenu(person, people){
     displayPeople(getFamily(person, people));
     break;
     case "descendants":
-    try{
-      displayPeople(getDescendants(person, people));
-    }catch(err){
-      app(people);
-    }
+    let descendants = getDescendants(person,people);
+    if(descendants.length > 0) displayPeople(descendants);
+    else alert("According to our database, " + person.firstName + " " + person.lastName + " has no descendants.");
     break;
     case "restart":
     app(people);
@@ -224,10 +222,6 @@ function getDescendants(person, people) {
         descendants.push(grandkids[j]);
       }
     }
-  }
-  if(descendants.length === 0){
-    alert("According to our database " + person.firstName + " " + person.lastName + " has no descendants.");
-    return;
   }
   return descendants;
 }
