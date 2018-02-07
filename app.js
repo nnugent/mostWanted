@@ -53,14 +53,14 @@ function mainMenu(person, people){
   var displayOption = promptForText("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", mainInput);
   switch(displayOption){
     case "info":
-      displayPersonInfo(person);
+      alert(displayPersonInfo(person));
       break;
     case "family":
-      displayPeople(getFamily(person, people));
+      alert(displayPeople(getFamily(person, people)));
       break;
     case "descendants":
       let descendants = getDescendants(person,people);
-      if(descendants.length > 0) displayPeople(descendants);
+      if(descendants.length > 0) alert(displayPeople(descendants));
       else alert("According to our database, " + person.firstName + " " + person.lastName + " has no descendants.");
       break;
     case "restart":
@@ -74,7 +74,7 @@ function mainMenu(person, people){
 }
 
 function displayPeople(people){
-  alert(people.map(function(person){
+  return (people.map(function(person){
     return person.firstName + " " + person.lastName;
   }).join("\n"));
 }
@@ -90,7 +90,7 @@ function displayPersonInfo(person){
   personInfo += "Weight: " + person.weight + "\n";
   personInfo += "Eye Color: " + person.eyeColor + "\n";
   personInfo += "Occupation: " + person.occupation + "\n";
-  alert(personInfo);
+  return personInfo;
 }
 
 function searchByName(people){
@@ -117,11 +117,8 @@ function searchByHeight(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the height you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByWeight(people) {
@@ -132,11 +129,8 @@ function searchByWeight(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the weight you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByEyeColor(people) {
@@ -146,11 +140,8 @@ function searchByEyeColor(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the eye color you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByGender(people) {
@@ -160,11 +151,8 @@ function searchByGender(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the gender you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByAge(people) {
@@ -174,12 +162,8 @@ function searchByAge(people) {
       return true;
     }
   });
-  if(filteredPeople.length > 1){
-    alert("The following people were found with the age you entered.");
-    displayPeople(filteredPeople);
-    promptForText("Which person would you like to look for?")
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function searchByOccupation(people) {
@@ -189,11 +173,8 @@ function searchByOccupation(people) {
       return true;
     }
   });
-if(filteredPeople.length > 1){
-    alert("The following people were found with the occupation you entered.");
-    displayPeople(filteredPeople);
-  }
-  return filteredPeople;
+  let foundPerson = resultChoice(filteredPeople);
+  return foundPerson;
 }
 
 function getAge(people) {
@@ -323,11 +304,23 @@ function promptForNumbers(question){
   }while(!response || incorrectInput);
   return response;
 }
-function foundPeopleChoice(people) {
+
+function resultChoice(people) {
   if(people.length === 1){
     return people[0];
   } else {
-
+    let person = prompt("There were multiple people found with that information. Which of them would you like to look into?\n\n" + displayPeople(people)).toLowerCase();
+    let personNames = person.split(" ");
+    let choice = people.filter(function(el){
+    if(el.firstName.toLowerCase() === personNames[0] && el.lastName.toLowerCase() === personNames[1]){
+      return true;
+    }
+  });
+    if(choice.length === 0){
+      alert("Your input was invalid, please try again.");
+      return resultChoice(people);
+    }
+    return choice;
   }
 }
 /*******Set up the searchByFunctions to ask for which person they would want to inspect if there are multiple matches 
