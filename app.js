@@ -59,7 +59,11 @@ function mainMenu(person, people){
     displayPeople(getFamily(person, people));
     break;
     case "descendants":
-    displayPeople(getDescendants(person, people));
+    try{
+      displayPeople(getDescendants(person, people));
+    }catch(err){
+      app(people);
+    }
     break;
     case "restart":
     app(people);
