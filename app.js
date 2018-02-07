@@ -33,6 +33,7 @@ function searchByTraits(people) {
       break;
     case "age":
       filteredPeople = searchByAge(people); 
+      break;
     case "occupation":
       filteredPeople = searchByOccupation(people); 
       break;
@@ -168,7 +169,8 @@ function searchByGender(people) {
 }
 
 function searchByAge(people) {
-  let userInputAge = promptForNumbers("How old is the person you are looking for?"); // added framework not logic to find the age
+  let userInputAge = promptForNumbers("How old is the person you are looking for?"); 
+  getAge(people);
   let filteredPeople = people.filter(function (el) {
     if(el.age === userInputAge) {
       return true;
