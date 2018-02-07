@@ -80,8 +80,6 @@ function displayPeople(people){
 }
 
 function displayPersonInfo(person){
-  // print all of the information about a person:
-  // height, weight, age, name, occupation, eye color.
   var personInfo = "First Name: " + person.firstName + "\n";
   personInfo += "Last Name: " + person.lastName + "\n";
   personInfo += "Gender: " + person.gender + "\n";
@@ -112,7 +110,6 @@ function searchByName(people){
 
 function searchByHeight(people) {
   let userInputHeight = promptForNumbers("How tall is the person?");
-
   let filteredPeople = people.filter(function (el) {
     if(el.height === userInputHeight) {
       return true;
@@ -124,7 +121,6 @@ function searchByHeight(people) {
 
 function searchByWeight(people) {
   let userInputWeight = promptForNumbers("How much does the person weigh?"); 
-
   let filteredPeople = people.filterForNumbers(function (el) {
     if(el.weight === userInputWeight) {
       return true;
@@ -179,20 +175,17 @@ function searchByOccupation(people) {
 }
 
 function getAge(people) {
-  // pull in Array
   let age;
   let todaysDate = new Date();
   let currentDate = todaysDate.getDate();
-  let currentMonth = todaysDate.getMonth() + 1; //Months are zero based
+  let currentMonth = todaysDate.getMonth() + 1;
   let currentYear = todaysDate.getFullYear();
   people = people.map(function(el){
   let splitDobString = el.dob.split("/");
   let convertDobToNumbers = splitDobString.map(Number);
   let PersonBirthMonth = convertDobToNumbers[0];
   let PersonBirthYear = convertDobToNumbers[2];
-  // if mymonth > current month -1 from age
   if (PersonBirthMonth > currentMonth) {
-  
     age = (currentYear - 1 ) - PersonBirthYear;
   }
   else {
@@ -200,11 +193,7 @@ function getAge(people) {
   }
   el.age = age;
 });
-
 }
-  // take the dob and convert into an Age 
-
-  //return to searchByAge
 
 function getDescendants(person, people) {
   let descendants = getChildren(person, people);
@@ -335,6 +324,3 @@ function resultChoice(people) {
     return choice;
   }
 }
-/*******Set up the searchByFunctions to ask for which person they would want to inspect if there are multiple matches 
-could most likly make something like another name prompt function that get's passed the new array of people that matched, and then ask 
-the user which person they would like to use, and then set that equal to found person*******/
