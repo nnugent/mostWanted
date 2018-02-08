@@ -1,4 +1,5 @@
 function app(people){
+  people = getAge(people);
   var searchType = promptForText("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
@@ -33,6 +34,7 @@ function searchByTraits(people) {
       break;
     case "age":
       filteredPeople = searchByAge(people); 
+      break;
     case "occupation":
       filteredPeople = searchByOccupation(people); 
       break;
@@ -154,7 +156,6 @@ function searchByGender(people) {
 
 function searchByAge(people) {
   let userInputAge = promptForNumbers("How old is the person you are looking for?"); // added framework not logic to find the age
-  getAge(people);
   let filteredPeople = people.filter(function (el) {
 
     if(el.age === userInputAge) {
