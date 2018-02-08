@@ -106,6 +106,7 @@ function searchByName(people){
     app(people);
   }
   let foundPerson = filteredPeople[0];
+  return foundPerson;
 }
 
 function searchByHeight(people) {
@@ -172,13 +173,15 @@ function searchByOccupation(people) {
 function getAge(people) {
   let todaysDate = new Date();
   let oneYearInMilliseconds = 31556926000;
-  people = people.map(function(el){
+  let agedPeople = [];
+  agedPeople = people.map(function(el){
     let personsBirthDate = new Date(el.dob);
     let ageInMilliseconds = todaysDate - personsBirthDate;
     let age = Math.floor(ageInMilliseconds / oneYearInMilliseconds);
     el.age = age;
+    return el;
   });
-  return people;
+  return agedPeople;
 }
 
 function getDescendants(person, people) {
@@ -273,7 +276,7 @@ function searchByInputCheck(input) {
 function promptForText(question, valid){
   do{
     var incorrectInput = true; 
-    var response = prompt(question).trim().toLowerCase();
+    var response = (prompt(question).trim()).toLowerCase();
     if(!valid(response)){
       alert("Your input was invalid, check the prompt for valid inputs.");
     }else incorrectInput = false;
