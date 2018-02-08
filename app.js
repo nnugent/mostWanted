@@ -3,10 +3,10 @@ function app(people){
   var searchType = promptForText("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo);
   switch(searchType){
     case 'yes':
-      searchByName(people);
+      mainMenu(searchByName(people),people);
       break;
     case 'no':
-      searchByTraits(people);
+      mainMenu(searchBySingleTrait(people),people);
       break;
     default:
       alert("Wrong! Please try again, following the instructions dummy. :)");
@@ -15,36 +15,35 @@ function app(people){
   }
 }
 
-function searchByTraits(people) {
+function searchBySingleTrait(people) {
   let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.", searchByInputCheck);
   let filteredPeople;
 
   switch(userSearchChoice) {
     case "height":
-      filteredPeople = searchByHeight(people); 
+      filteredPeople = resultChoice(searchByHeight(people)); 
       break;
     case "weight":
-      filteredPeople = searchByWeight(people);
+      filteredPeople = resultChoice(searchByWeight(people));
       break;
     case "eye color":
-      filteredPeople = searchByEyeColor(people); 
+      filteredPeople = resultChoice(searchByEyeColor(people)); 
       break;
     case "gender":
-      filteredPeople = searchByGender(people); 
+      filteredPeople = resultChoice(searchByGender(people)); 
       break;
     case "age":
-      filteredPeople = searchByAge(people); 
+      filteredPeople = resultChoice(searchByAge(people)); 
       break;
     case "occupation":
-      filteredPeople = searchByOccupation(people); 
+      filteredPeople = resultChoice(searchByOccupation(people)); 
       break;
     default:
       alert("You entered an invalid search type! Please try again.");
-      searchByTraits(people);
+      searchBySingleTrait(people);
       break;
-  }  
-  let foundPerson = filteredPeople[0];
-  mainMenu(foundPerson, people);
+  }
+  return filteredPeople[0];  
 }
 
 function mainMenu(person, people){
@@ -103,11 +102,10 @@ function searchByName(people){
     }
   });
   if(filteredPeople.length > 1){
-    alert("There were multiple people with that name, try searching with a different trait.");
+    alert("There were multiple people with that name, try searching with a different trait or using advanced search.");
     app(people);
   }
   let foundPerson = filteredPeople[0];
-  mainMenu(foundPerson, people);
 }
 
 function searchByHeight(people) {
@@ -117,8 +115,7 @@ function searchByHeight(people) {
       return true;
     }
   });
-  let foundPerson = resultChoice(filteredPeople);
-  return foundPerson;
+  return filteredPeople;
 }
 
 function searchByWeight(people) {
@@ -128,8 +125,7 @@ function searchByWeight(people) {
       return true;
     }
   });
-  let foundPerson = resultChoice(filteredPeople);
-  return foundPerson;
+  return filteredPeople;
 }
 
 function searchByEyeColor(people) {
@@ -139,8 +135,7 @@ function searchByEyeColor(people) {
       return true;
     }
   });
-  let foundPerson = resultChoice(filteredPeople);
-  return foundPerson;
+  return filteredPeople;
 }
 
 function searchByGender(people) {
@@ -150,8 +145,7 @@ function searchByGender(people) {
       return true;
     }
   });
-  let foundPerson = resultChoice(filteredPeople);
-  return foundPerson;
+  return filteredPeople;
 }
 
 function searchByAge(people) {
@@ -162,8 +156,7 @@ function searchByAge(people) {
       return true;
     }
   });
-  let foundPerson = resultChoice(filteredPeople);
-  return foundPerson;
+  return filteredPeople;
 }
 
 function searchByOccupation(people) {
@@ -173,21 +166,18 @@ function searchByOccupation(people) {
       return true;
     }
   });
-  let foundPerson = resultChoice(filteredPeople);
-  return foundPerson;
+  return filteredPeople;
 }
 
 function getAge(people) {
   let todaysDate = new Date();
   let oneYearInMilliseconds = 31556926000;
   people = people.map(function(el){
-
-  let personsBirthDate = new Date(el.dob);
-  let ageInMilliseconds = todaysDate - personsBirthDate;
-  let age = Math.floor(ageInMilliseconds / oneYearInMilliseconds);
- 
-  el.age = age;
-});
+    let personsBirthDate = new Date(el.dob);
+    let ageInMilliseconds = todaysDate - personsBirthDate;
+    let age = Math.floor(ageInMilliseconds / oneYearInMilliseconds);
+    el.age = age;
+  });
   return people;
 }
 
@@ -319,4 +309,76 @@ function resultChoice(people) {
     }
     return choice;
   }
+}
+
+function advancedSearch(people) {
+  let possibleTraits = ["full name","first name","last name", "height", "weight", "age", "dob", "occupation", "gender", "eye color"];
+  let counter = 0;
+  do{
+    let stringOfTraits;
+    let filteredPeople;
+    stringOfTraits = possibleTraits.join(", ");
+    let trait = prompt("What trait do you know about your target?").trim().toLowerCase();
+    possibleTraits.filter(function (el) {
+      if(el === trait){
+        el.remove();
+      }
+    });
+    let value = prompt("What is the " + trait + " that you are searching for?");
+    people = people.filter(function(el){
+      switch(trait){
+        case "full name":
+          let name = trait.split(" ");
+          let firstName = name[0];
+          let lastName = name[1];
+          filteredPeople = people.filter(function(el){
+            if(el.firstName.toLowerCase() === firstName && el.lastName.toLowerCase() === lastName){
+              return true;
+            }
+          });
+          break;
+        case "first name":
+        let firstName = trait;
+          filteredPeople = people.filter(function(el){
+            if(el.firstName.toLowerCase() === firstName){
+              return true;
+            }
+          });
+          break;
+        case "last name":
+        let lastName = trait;
+          filteredPeople = people.filter(function(el){
+            if(el.lastName.toLowerCase() === lastName){
+              return true;
+            }
+          });
+          break;
+        case "height":
+          filteredPeople = people.filter(function (el) {
+            if(el.height === userInputHeight) {
+            return true;
+            }
+          });
+          break;
+        case "weight":
+          break;
+        case "age":
+          break;
+        case "dob":
+          break;
+        case "occupation":
+          break;
+        case "gender":
+          break;
+        case "eyeColor":
+          break;
+        default:
+        break;
+      } 
+    }); 
+  }while(counter < 5);
+  // ask for the trait that they would like to narrow the search with from the array of possible traits
+  // narrow the search group offer to display names of new group, if yes display & ask if would like to continue with one of those people
+  // if not continue. add one to counter, advanced search run again with counter value and remove used trait & pass current possible traits 
+  // once counter reaches 4 (5 traits used.)
 }
