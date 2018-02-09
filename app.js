@@ -1,14 +1,11 @@
 function app(people){
   people = getAge(people);
-  var searchType = promptForText("How would you like to search? Enter 'name' 'trait' or 'advanced'.", searchMode);
+  var searchType = promptForText("Would you like to search for someone by name, or using advanced search? Enter 'name' or 'advanced'", searchMode);
   switch(searchType){
     case 'name':
       mainMenu(searchByFullName(people),people);
       break;
-    case 'trait':
-      mainMenu(searchBySingleTrait(people),people);
-      break;
-      case 'advanced':
+    case 'advanced':
       mainMenu(advancedSearch(people),people);
       break;
     default:
@@ -16,37 +13,6 @@ function app(people){
       app(people);
       break;
   }
-}
-
-function searchBySingleTrait(people) {
-  let userSearchChoice = promptForText("What would you like to search by? 'height', 'weight', 'eye color', 'gender', 'age', 'occupation'.", searchByInputCheck);
-  let filteredPeople;
-
-  switch(userSearchChoice) {
-    case "height":
-      filteredPeople = resultChoice(searchByHeight(people)); 
-      break;
-    case "weight":
-      filteredPeople = resultChoice(searchByWeight(people));
-      break;
-    case "eye color":
-      filteredPeople = resultChoice(searchByEyeColor(people)); 
-      break;
-    case "gender":
-      filteredPeople = resultChoice(searchByGender(people)); 
-      break;
-    case "age":
-      filteredPeople = resultChoice(searchByAge(people)); 
-      break;
-    case "occupation":
-      filteredPeople = resultChoice(searchByOccupation(people)); 
-      break;
-    default:
-      alert("You entered an invalid search type! Please try again.");
-      searchBySingleTrait(people);
-      break;
-  }
-  return filteredPeople[0];  
 }
 
 function mainMenu(person, people){
@@ -108,6 +74,7 @@ function searchByFirstName(people) {
 
 function searchByLastName(people) {
   let lastName = promptForText("What is the last name of the person you are looking for?", chars);
+  return lastNameFilter(lastName, people);
 }
 
 function searchByHeight(people) {
@@ -228,7 +195,7 @@ function getCurrentSpouse(person,people){
 }
 
 function searchMode(input){
-  return (input === "name" || input === "trait" || input === "advanced");
+  return (input === "name" || input === "advanced");
 }
 
 function chars(input){
