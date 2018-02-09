@@ -26,7 +26,7 @@ function mainMenu(person, people){
       alert(displayPersonInfo(person));
       break;
     case "family":
-      alert(displayPeople(getFamily(person, people)));
+      alert(displayFamily(person, people));
       break;
     case "descendants":
       let descendants = getDescendants(person,people);
@@ -41,6 +41,7 @@ function mainMenu(person, people){
     default:
       return mainMenu(person, people);
   }
+  mainMenu(person,people);
 }
 
 function displayPeople(people){
@@ -103,7 +104,7 @@ function searchByAge(people) {
 }
 
 function searchByOccupation(people) {
-  let userInputOccupation = promptForText("What is the person's Occupation?", chars);
+  let userInputOccupation = promptForText("What is the person's occupation?", chars);
   return occupationFilter(userInputOccupation, people);
 }
 
@@ -134,17 +135,32 @@ function getDescendants(person, people) {
   return descendants;
 }
 
-function getFamily(person, people) {
+function displayFamily(person, people) {
   let parents = getParents(person, people);
   let siblings = getSiblings(person, people);
   let children = getChildren(person, people);
   let currentSpouse = getCurrentSpouse(person, people);
-  let family = [person];
-  if(parents !== undefined) family = family.concat(parents);
-  if(siblings !== undefined) family = family.concat(siblings);
-  if(children !== undefined) family = family.concat(children);
-  if(currentSpouse !== undefined) family = family.concat(currentSpouse);
-  family.shift(); 
+  let family = "";
+  if(parents.length > 0){
+    family = family.concat("Parents:\n" + displayPeople(parents));
+  }else{
+    family = family.concat("Parents:\nNone");
+  }
+  if(siblings.length > 0){
+    family = family.concat("\nSiblings:\n" + displayPeople(siblings));
+  }else{
+    family = family.concat("\nSiblings:\nNone");
+  }
+  if(children.length > 0){
+    family = family.concat("\nChildren:\n" + displayPeople(children));
+  }else{
+    family = family.concat("\nChildren:\nNone");
+  }
+  if(currentSpouse.length > 0){
+    family = family.concat("\nCurrent Spouse:\n" + displayPeople(currentSpouse));
+  }else{
+    family = family.concat("\nCurrent Spouse:\nNone")
+  }
   return family;
 }
 
