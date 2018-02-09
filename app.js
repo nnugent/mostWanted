@@ -99,7 +99,7 @@ function searchByGender(people) {
 
 function searchByAge(people) {
   let userInputAge = promptForNumbers("How old is the person you are looking for?");
-  return ageFilter(userinputAge, people);
+  return ageFilter(userInputAge, people);
 }
 
 function searchByOccupation(people) {
