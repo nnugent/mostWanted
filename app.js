@@ -315,7 +315,7 @@ function resultChoice(people) {
       alert("Your input was invalid, please try again.");
       return resultChoice(people);
     }
-    return choice;
+    return choice[0];
   }
 }
 
@@ -340,84 +340,38 @@ function advancedSearch(people) {
     let traitValue = prompt("What is the " + trait + " that you are searching for?");
     switch(trait){
       case "full name":
-        let name = traitValue.split(" ");
-        let firstName = name[0];
-        let lastName = name[1];
-        filteredPeople = people.filter(function(el){
-          if(el.firstName.toLowerCase() === firstName && el.lastName.toLowerCase() === lastName){
-            return true;
-          }
-        });
+        filteredPeople = fullNameFilter(traitValue, filteredPeople);
         break;
       case "first name":
-      firstName = traitValue;
-        filteredPeople = filteredPeople.filter(function(el){
-          if(el.firstName.toLowerCase() === firstName){
-            return true;
-          }
-        });
+      filteredPeople = firstNameFilter(traitValue, filteredPeople);
         break;
       case "last name":
-      lastName = traitValue;
-        filteredPeople = filteredPeople.filter(function(el){
-          if(el.lastName.toLowerCase() === lastName){
-            return true;
-          }
-        });
+        filteredPeople = lastNameFilter(traitValue, filteredPeople);
         break;
       case "height":
-        filteredPeople = filteredPeople.filter(function (el) {
-          if(el.height === parseInt(traitValue)) {
-          return true;
-          }
-        });
+        filteredPeople = heightFilter(traitValue, filteredPeople);
         break;
       case "weight":
-        filteredPeople = filteredPeople.filter(function (el) {
-          if(el.weight === parseInt(traitValue)) {
-          return true;
-          }
-        });
+        filteredPeople = weightFilter(traitValue, filteredPeople);
         break;
       case "age":
-        filteredPeople = filteredPeople.filter(function (el) {
-          if(el.age === parseInt(traitValue)) {
-          return true;
-          }
-        });
+        filteredPeople = ageFilter(traitValue, filteredPeople);
         break;
       case "occupation":
-        filteredPeople = filteredPeople.filter(function (el) {
-          if(el.occupation === traitValue) {
-          return true;
-          }
-        });
+        filteredPeople = occupationFilter(traitValue, filteredPeople);
         break;
       case "gender":
-        filteredPeople = filteredPeople.filter(function (el) {
-          if(el.gender === traitValue) {
-          return true;
-          }
-        });
+        filteredPeople = genderFilter(traitValue, filteredPeople);
         break;
       case "eye color":
-        filteredPeople = filteredPeople.filter(function (el) {
-          if(el.eyeColor === traitValue) {
-          return true;
-          }
-        });
+        filteredPeople = eyeColorFilter(traitValue, filteredPeople);
         break;
       default:
-        console.log("how did you get here you monkey?");
+        console.log("How did you get here you monkey?");
+        app(people);
       break;
     }
-    if(filteredPeople.length === 1){
-      alert(displayPeople(filteredPeople) + " was found given your search parameters.");
-      return filteredPeople[0];
-    } else if (filteredPeople.legnth === 0){
-      alert("No one meets the information you provided.");
-     return app(people);
-    }
+    peopleCheck(filteredPeople, people);
     counter++;
     let choice = promptForText("There are " + filteredPeople.length + " results found, would you like to choose someone from the list?\nEnter 'yes' or 'no'.", yesNo);
     if(choice === "yes"){
@@ -428,4 +382,98 @@ function advancedSearch(people) {
   // narrow the search group offer to display names of new group, if yes display & ask if would like to continue with one of those people
   // if not continue. add one to counter, advanced search run again with counter value and remove used trait & pass current possible traits 
   // once counter reaches 4 (5 traits used.)
+}
+
+function fullNameFilter(fullName, people){
+  let name = fullName.split(" ");
+  let firstName = name[0];
+  let lastName = name[1];
+  let filteredPeople = people.filter(function(el){
+    if(el.firstName.toLowerCase() === firstName && el.lastName.toLowerCase() === lastName){
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function firstNameFilter(firstName, people){
+  let filteredPeople = people.filter(function(el){
+    if(el.firstName.toLowerCase() === firstName){
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function lastNameFilter(lastName, people) {
+  let filteredPeople = people.filter(function(el){
+    if(el.lastName.toLowerCase() === lastName){
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function heightFilter(height, people) {
+  filteredPeople = people.filter(function (el) {
+    if(el.height === parseInt(height)) {
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function weightFilter(weight, people) {
+  let filteredPeople = people.filter(function (el) {
+    if(el.weight === parseInt(weight)) {
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function ageFilter(age, people) {
+  let filteredPeople = people.filter(function (el) {
+    if(el.age === parseInt(age)) {
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function occupationFilter(occupation, people) {
+  let filteredPeople = people.filter(function(el){
+    if(el.occupation.toLowerCase() === occupation){
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function genderFilter(gender, people) {
+  let filteredPeople = people.filter(function(el){
+    if(el.gender.toLowerCase() === gender){
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function eyeColorFilter(eyeColor, people) {
+  let filteredPeople = people.filter(function(el){
+    if(el.eyeColor.toLowerCase() === eyeColor){
+      return true;
+    }
+  });
+  return filteredPeople;
+}
+
+function peopleCheck(filteredPeople, people) {
+  if(filteredPeople.length === 1){
+    alert(displayPeople(filteredPeople, people) + " was found given your search parameters.");
+    return mainMenu(filteredPeople[0], people);
+  }else if (filteredPeople.legnth === 0){
+    alert("No one meets the information you have provided.");
+      return app(people);
+  }
 }
